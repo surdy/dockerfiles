@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -o errexit -o pipefail
+
+DCOS_INSTALLER_URL=${1:-$DCOS_INSTALLER_URL}
+
+if [[ -z "$DCOS_INSTALLER_URL" ]]; then
+    echo "DCOS_INSTALLER_URL not set. You can set it one of two ways:"
+    echo "    1) Setting environment variable DCOS_INSTALLER_URL"
+    echo "    2) Passing it as an argument"
+    echo "Exiting .."
+    exit 1
+fi
+ 
+cd /bootstrap
+
+if [[ ! -f genconf/config.yaml ]]; then
+    echo "No ${PWD}/config.yaml found. Cannot create DC/OS install files without it. Exiting .." 
+    exit 1
+fi
+if [[ ! -f genconf/ip-detect ]]; then
+    echo "No ${PWD}/ip-detect found. Cannot create DC/OS install files without it. Exiting .." 
+    exit 1
+fi
+
+curl -O "$DCOS_INSTALLER_URL"
+
+bash dcos_generate_config.sh
