@@ -1,0 +1,3 @@
+dcos-bootstrap/dcos-genconf.*
+dcos-bootstrap/genconf/*
+dcos_generate_config*
